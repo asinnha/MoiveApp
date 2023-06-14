@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ class MovieDetails : AppCompatActivity() {
     private var movieResult: Results? = null
     val viewModel: MoviesViewModel by viewModel()
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieDetailsPageBinding.inflate(layoutInflater)
@@ -22,14 +24,15 @@ class MovieDetails : AppCompatActivity() {
 
         viewModel.nowPlayingList.observe(this){
             movieResult = it[moviePosition]
-            val urlForPoster = "${MainActivity.IMAGE_BASE_URL}${movieResult?.backdropPath}"
+            val urlForPoster = "${MainActivity.BACKDROP_BASE_URL}${movieResult?.backdropPath}"
             Glide.with(this)
                 .load(urlForPoster)
-                .centerInside()
+                .centerCrop()
                 .into(binding.backdropPoster)
             binding.mdTitle.text = movieResult?.originalTitle
-            binding.rating.text = movieResult?.popularity.toString()
+            binding.rating.text = "Ratings: ${movieResult?.voteAverage.toString()}"
             binding.synopsisTextArea.text = movieResult?.overview
+            binding.rating.text = movieResult?.
 
         }
 

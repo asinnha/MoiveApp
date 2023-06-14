@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         const val API_KEY = "05679fcbecd828bb8ed74f83e6da99c9"
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+        const val BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/w780"
     }
 
     private lateinit var binding:ActivityMainBinding

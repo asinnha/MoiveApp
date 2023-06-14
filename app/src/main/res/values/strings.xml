@@ -48,4 +48,5 @@
     <string name="Synopsis">Synopsis</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="Review">Reviews</string>
 </resources>

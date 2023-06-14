@@ -1,53 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MovieDetails">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/backdrop_poster"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/md_title"
-        android:textSize="22sp"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rating"
-        android:textSize="20dp"/>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/orange"
-        android:id="@+id/synopsis_card">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="260sp"
+            android:id="@+id/backdrop_poster"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            android:layout_marginTop="5sp"
+            android:id="@+id/md_title"
+            android:textSize="25sp"
+            android:hint="title"
+            android:textStyle="bold"
+            />
 
-            <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4sp"
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            android:id="@+id/rating"
+            android:textSize="18dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            app:cardCornerRadius="8sp"
+            android:id="@+id/synopsis_card">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Synopsis"
-                android:textSize="24sp"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/synopsis_text_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingTop="50sp"
+                    android:paddingBottom="20sp"
+                    android:paddingStart="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/orange"
+                    android:hint="heloo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12sp"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/Synopsis"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.04"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            app:cardCornerRadius="8sp"
+            android:id="@+id/reviews_card">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:id="@+id/synopsis_text_area"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/reviews_text_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingTop="50sp"
+                    android:paddingBottom="20sp"
+                    android:paddingStart="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/purple"
+                    android:hint="heloo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12sp"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/Review"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.04"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.core.widget.NestedScrollView>
