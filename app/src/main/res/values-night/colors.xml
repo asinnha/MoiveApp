@@ -8,4 +8,6 @@
     <color name="green_end">#1CE916</color>
     <color name="yellow_start">#D6AC04</color>
     <color name="yellow_end">#FFDE6F</color>
+    <color name="grey">#5E000000</color>
+    <color name="transparent">#8FFFFFFF</color>
 </resources>
