@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,7 +47,6 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
             this.isFocusable = true
             this.isFocusableInTouchMode = true
         }
-        println(movieDetailsList[position].originalTitle)
         holder.releaseText.text = "Releasing on: ${ movieDetailsList[position].releaseDate }"
 
         val urlForPoster = "$IMAGE_BASE_URL${movieDetailsList[position].posterPath}"
@@ -57,9 +57,9 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
 
         holder.poster.setOnClickListener {
             val intent = Intent(holder.poster.context,MovieDetails::class.java)
-            intent.putExtra("Movie Position",position)
+            val results:Results = movieDetailsList[position]
+            intent.putExtra("Movie Detail List",results)
             holder.poster.context.startActivity(intent)
-
         }
     }
 }

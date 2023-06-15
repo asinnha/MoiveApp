@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
+import com.example.myapplication.RecyclerViews.ReviewsRecyclerViewAdapter
 import com.example.myapplication.databinding.ActivityMovieDetailsPageBinding
 import com.example.myapplication.dataclasses.Results
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,21 +21,28 @@ class MovieDetails : AppCompatActivity() {
         binding = ActivityMovieDetailsPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val moviePosition = intent.getIntExtra("Movie Position", Int.MAX_VALUE)
+        //data setting with Results object
+        val movieDetailList = intent.getSerializableExtra("Movie Detail List") as Results
+        movieResult = movieDetailList
+        val urlForPoster = "${MainActivity.BACKDROP_BASE_URL}${movieResult?.backdropPath}"
+        Glide.with(this)
+            .load(urlForPoster)
+            .centerCrop()
+            .into(binding.backdropPoster)
+        binding.mdTitle.text = movieResult?.originalTitle
+        binding.rating.text = "Ratings: ${movieResult?.voteAverage.toString()}"
+        binding.synopsisTextArea.text = movieResult?.overview
 
-        viewModel.nowPlayingList.observe(this){
-            movieResult = it[moviePosition]
-            val urlForPoster = "${MainActivity.BACKDROP_BASE_URL}${movieResult?.backdropPath}"
-            Glide.with(this)
-                .load(urlForPoster)
-                .centerCrop()
-                .into(binding.backdropPoster)
-            binding.mdTitle.text = movieResult?.originalTitle
-            binding.rating.text = "Ratings: ${movieResult?.voteAverage.toString()}"
-            binding.synopsisTextArea.text = movieResult?.overview
-            binding.rating.text = movieResult?.
 
+        // reviews data
+        movieResult?.id?.let { it1 -> viewModel.reviewByMovieId(it1) }
+        viewModel.movieReviewResult.observe(this){
+            val reviewsRV = binding.reviewsRecyclerView
+            val reviewsAdapter = ReviewsRecyclerViewAdapter(it)
         }
+
+
+
 
     }
 }

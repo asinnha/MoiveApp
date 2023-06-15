@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.MainActivity.Companion.API_KEY
 import com.example.myapplication.dataclasses.Movie
+import com.example.myapplication.dataclasses.MovieReview
 import com.example.myapplication.dataclasses.Results
+import com.example.myapplication.dataclasses.ReviewResult
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -34,6 +36,27 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
             }
         })
         return movieDetailsArrayList
+    }
+
+    var reviewByMovieId = MutableLiveData<ArrayList<ReviewResult>>()
+    fun reviewsByMovieId(movieId: Int): MutableLiveData<ArrayList<ReviewResult>> {
+
+        val review = retrofitCall.reviewsByMovieId(movieId)
+        review.enqueue(object : Callback<MovieReview> {
+            override fun onResponse(call: Call<MovieReview>, response: Response<MovieReview>) {
+                if (response.isSuccessful) {
+                    val reviewDetails: MovieReview? = response.body()
+                    reviewDetails?.let { movieReview ->
+                        reviewByMovieId.value = movieReview.results
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MovieReview>, t: Throwable) {
+                Log.e("E: review response -> ", t.message.toString())
+            }
+        })
+        return reviewByMovieId
     }
 
 }

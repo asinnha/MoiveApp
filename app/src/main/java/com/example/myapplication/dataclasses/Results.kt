@@ -1,6 +1,7 @@
 package com.example.myapplication.dataclasses
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Results(
 
@@ -20,4 +21,4 @@ data class Results(
     @SerializedName("vote_count"        ) var voteCount: Int?           = null
 
 
-)
+): Serializable

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150sp"
+    android:layout_height="200sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8sp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small"
+            android:id="@+id/credit_image_view"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/credits_title"
+            android:textSize="16sp"
+            android:paddingStart="6sp"
+            android:paddingEnd="6sp"
+            android:paddingTop="4sp"
+            android:paddingBottom="4sp"
+            android:layout_weight="3"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.cardview.widget.CardView>
