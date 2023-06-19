@@ -1,18 +1,27 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.myapplication.RecyclerViews.CastRecyclerViewAdapter
+import com.example.myapplication.RecyclerViews.CrewRecyclerViewAdapter
 import com.example.myapplication.RecyclerViews.ReviewsRecyclerViewAdapter
+import com.example.myapplication.RecyclerViews.SimilarMoviesRecyclerViewAdapter
 import com.example.myapplication.databinding.ActivityMovieDetailsPageBinding
+import com.example.myapplication.dataclasses.Cast
+import com.example.myapplication.dataclasses.Crew
 import com.example.myapplication.dataclasses.Results
+import com.example.myapplication.dataclasses.ReviewResult
+import com.example.myapplication.dataclasses.SimilarMovieResults
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetails : AppCompatActivity() {
 
     lateinit var binding: ActivityMovieDetailsPageBinding
     private var movieResult: Results? = null
+    var movieId: Int? = null
     val viewModel: MoviesViewModel by viewModel()
 
     @SuppressLint("SetTextI18n")
@@ -24,6 +33,15 @@ class MovieDetails : AppCompatActivity() {
         //data setting with Results object
         val movieDetailList = intent.getSerializableExtra("Movie Detail List") as Results
         movieResult = movieDetailList
+        movieId = movieResult!!.id!!
+
+        //credits data
+        viewModel.creditsByMovieId(movieId!!)
+        // reviews data
+        viewModel.reviewByMovieId(movieId!!)
+        //similar movies data
+        viewModel.similarMoviesByMovieId(movieId!!)
+
         val urlForPoster = "${MainActivity.BACKDROP_BASE_URL}${movieResult?.backdropPath}"
         Glide.with(this)
             .load(urlForPoster)
@@ -33,16 +51,53 @@ class MovieDetails : AppCompatActivity() {
         binding.rating.text = "Ratings: ${movieResult?.voteAverage.toString()}"
         binding.synopsisTextArea.text = movieResult?.overview
 
-
-        // reviews data
-        movieResult?.id?.let { it1 -> viewModel.reviewByMovieId(it1) }
-        viewModel.movieReviewResult.observe(this){
-            val reviewsRV = binding.reviewsRecyclerView
-            val reviewsAdapter = ReviewsRecyclerViewAdapter(it)
+        //cast
+        val cast = ArrayList<Cast>()
+        viewModel.cast.observe(this){
+            cast.clear()
+            cast.addAll(it)
+            val castRecyclerView = binding.castRecyclerView
+            castRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+            val castAdapter = CastRecyclerViewAdapter(cast,this)
+            castRecyclerView.adapter = castAdapter
+        }
+        //crew
+        val crew = ArrayList<Crew>()
+        viewModel.crew.observe(this){
+            crew.clear()
+            it.forEach {
+                if(it.job!! == "Director" ||
+                    it.job!! == "Producer" ||
+                    it.job!! == "Writer"){
+                    crew.add(it)
+                }
+            }
+            val crewRecyclerView = binding.crewRecyclerView
+            crewRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+            val crewAdapter = CrewRecyclerViewAdapter(crew,this)
+            crewRecyclerView.adapter = crewAdapter
         }
 
+        val reviewsResult= ArrayList<ReviewResult>()
+        viewModel.movieReviewResult.observe(this){
+            reviewsResult.clear()
+            reviewsResult.addAll(it)
+            val reviewsRV = binding.reviewsRecyclerView
+            reviewsRV.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+            val reviewsAdapter = ReviewsRecyclerViewAdapter(reviewsResult)
+            reviewsRV.adapter = reviewsAdapter
+        }
 
-
+        val similarMovies = ArrayList<SimilarMovieResults>()
+        viewModel.similarMovies.observe(this){
+            similarMovies.clear()
+            similarMovies.addAll(it)
+            val similarMovieRecyclerView = binding.similarMoviesRecyclerview
+            similarMovieRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+            val similarMovieAdapter = SimilarMoviesRecyclerViewAdapter(similarMovies,this)
+            similarMovieRecyclerView.adapter = similarMovieAdapter
+        }
 
     }
+
 }

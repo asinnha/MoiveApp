@@ -26,6 +26,7 @@ class ReviewsRecyclerViewAdapter(val reviewResults: ArrayList<ReviewResult>) :Re
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.authorName.text = reviewResults[position].author
+        holder.review.text = reviewResults[position].content
     }
 
 }

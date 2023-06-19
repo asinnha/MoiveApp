@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="140sp"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="235sp"
     android:layout_height="200sp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10sp"
-    android:layout_marginStart="10sp">
+    android:layout_marginStart="10sp"
+    android:layout_marginBottom="4sp">
     
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="4sp">
+        android:layout_height="match_parent">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/reviews_text_area"
-            android:paddingBottom="2sp"
-            android:text="16sp"/>
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:paddingBottom="2sp"
-            android:id="@+id/reviews_author"
-            android:text="16sp"/>
+            <TextView
+                android:id="@+id/reviews_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="author"
+                android:paddingStart="10sp"
+                android:paddingEnd="10sp"
+                android:paddingTop="4sp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/reviews_text_area"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8sp"
+                android:layout_marginBottom="4sp"
+                android:nestedScrollingEnabled="true"
+                android:paddingStart="10sp"
+                android:paddingEnd="10sp"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:text="@string/lorem"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reviews_author" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.cardview.widget.CardView>
