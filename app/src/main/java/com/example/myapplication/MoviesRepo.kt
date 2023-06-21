@@ -1,28 +1,66 @@
 package com.example.myapplication
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.MainActivity.Companion.API_KEY
 import com.example.myapplication.dataclasses.Cast
+import com.example.myapplication.dataclasses.CreateRequestToken
 import com.example.myapplication.dataclasses.Credits
 import com.example.myapplication.dataclasses.Crew
 import com.example.myapplication.dataclasses.Movie
 import com.example.myapplication.dataclasses.MovieReview
 import com.example.myapplication.dataclasses.Results
 import com.example.myapplication.dataclasses.ReviewResult
+import com.example.myapplication.dataclasses.SessionRequestBody
+import com.example.myapplication.dataclasses.SessionResponse
 import com.example.myapplication.dataclasses.SimilarMovieResults
 import com.example.myapplication.dataclasses.SimilarMovies
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MoviesRepo(private val retrofitCall: RetrofitCall) {
+class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
 
+    val token =MutableLiveData<String>()
+    suspend fun requestToken() {
+
+        val requestToken = retrofitCall.getRequestToken(API_KEY)
+        requestToken.enqueue(object:Callback<CreateRequestToken>{
+            override fun onResponse(
+                call: Call<CreateRequestToken>,
+                response: Response<CreateRequestToken>
+            ) {
+                if(response.isSuccessful){
+                    val results = response.body()
+                    token.value = results?.requestToken.toString()
+                    println("repo ${token.value}")
+                    Log.i("Request Token","Success")
+                }
+            }
+
+            override fun onFailure(call: Call<CreateRequestToken>, t: Throwable) {
+                Log.e("Request Token",t.message.toString())
+            }
+
+        })
+    }
+
+    private val sharedPref: SharedPreferences = context.getSharedPreferences("Session Id",Context.MODE_PRIVATE)
+    fun saveSessionId(sessionId:String){
+        sharedPref.edit()
+            .putString("Session Id", sessionId)
+            .apply()
+    }
+
+    fun getSessionId(): String? {
+        return sharedPref.getString("Session Id","")
+    }
 
     private val nowPlaying = retrofitCall.nowPlaying(API_KEY)
-
     var movieDetailsArrayList = MutableLiveData<ArrayList<Results>>()
-    fun nowPlayingCall(){
+    suspend fun nowPlayingCall(){
 
         nowPlaying.enqueue(object : Callback<Movie> {
             override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
@@ -30,20 +68,41 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
                     val movie: Movie? = response.body()
                     movie?.let {
                         movieDetailsArrayList.value = it.results
-                        Log.i("movie details","successful")
+                        Log.i("Now Playing","SUCCESS")
                     }
                 }
             }
 
             override fun onFailure(call: Call<Movie>, t: Throwable) {
-                Log.e("E: now playing -> ", t.message.toString())
+                Log.e("Now Playing", t.message.toString())
             }
         })
 
     }
 
+    val upcomingMovieList = MutableLiveData<ArrayList<Results>>()
+    suspend fun upcomingMovies(){
+        val upcomingMovies = retrofitCall.upcomingMovies(API_KEY)
+        upcomingMovies.enqueue(object :Callback<Movie>{
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                if(response.isSuccessful){
+                    val movie: Movie? = response.body()
+                    movie?.let {
+                        upcomingMovieList.value = it.results
+                        Log.i("Upcoming Movies","SUCCESS")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+                Log.e("Upcoming Movies",t.message.toString())
+            }
+
+        })
+    }
+
     var reviewByMovieId = MutableLiveData<ArrayList<ReviewResult>>()
-    fun reviewsByMovieId(movieId: Int) {
+    suspend fun reviewsByMovieId(movieId: Int) {
 
         val review = retrofitCall.reviewsByMovieId(movieId, API_KEY)
         review.enqueue(object : Callback<MovieReview> {
@@ -65,7 +124,7 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
 
     val castCredits = MutableLiveData<ArrayList<Cast>>()
     val crewCredits = MutableLiveData<ArrayList<Crew>>()
-    fun creditsByMovieId(movieId: Int){
+    suspend fun creditsByMovieId(movieId: Int){
 
         val credits = retrofitCall.creditsByMovieId(
             movieId, API_KEY
@@ -73,8 +132,8 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
         credits.enqueue(object :Callback<Credits>{
             override fun onResponse(call: Call<Credits>, response: Response<Credits>) {
                 if(response.isSuccessful){
-                    val credits = response.body()
-                    credits?.let {
+                    val mCredits = response.body()
+                    mCredits?.let {
                         castCredits.value = it.cast
                         crewCredits.value = it.crew
                     }
@@ -91,7 +150,7 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
     }
 
     val similarMovies = MutableLiveData<ArrayList<SimilarMovieResults>>()
-    fun similarMoviesByMovieId(movieId: Int){
+    suspend fun similarMoviesByMovieId(movieId: Int){
 
         val callSimilarMovies = retrofitCall.similarMoviesByMovieId(movieId, API_KEY)
         callSimilarMovies.enqueue(object: Callback<SimilarMovies>{
@@ -107,6 +166,31 @@ class MoviesRepo(private val retrofitCall: RetrofitCall) {
 
             override fun onFailure(call: Call<SimilarMovies>, t: Throwable) {
                 Log.e("Similar Movies","FAILED")
+            }
+
+        })
+    }
+
+    val sessionId = MutableLiveData<String>()
+    fun createSessionId(requestToken: String) {
+        val createSessionID = retrofitCall.createSessionId(API_KEY, SessionRequestBody(requestToken = requestToken))
+        createSessionID.enqueue(object : Callback<SessionResponse>{
+            override fun onResponse(
+                call: Call<SessionResponse>,
+                response: Response<SessionResponse>
+            ) {
+                if(response.isSuccessful){
+                    val id = response.body()
+                    id?.let {
+                        sessionId.value = it.sessionId
+                        saveSessionId(it.sessionId)
+                        Log.i("Session Id","SUCCESS")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SessionResponse>, t: Throwable) {
+                Log.i("Session Id",t.message.toString())
             }
 
         })

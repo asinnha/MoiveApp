@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="235sp"
     android:layout_height="200sp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10sp"
+    app:cardPreventCornerOverlap="false"
+    app:cardBackgroundColor="@color/translucent"
     android:layout_marginStart="10sp"
     android:layout_marginBottom="4sp">
     
@@ -52,4 +54,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

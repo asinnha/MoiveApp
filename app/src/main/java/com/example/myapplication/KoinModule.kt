@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import com.example.myapplication.MainActivity.Companion.BASE_URL
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -18,7 +19,7 @@ val appModule = module {
     }
 
     single {
-        MoviesRepo(get())
+        MoviesRepo(get(),androidContext())
     }
 
     viewModel {

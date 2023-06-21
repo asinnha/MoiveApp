@@ -33,7 +33,9 @@ class MovieDetails : AppCompatActivity() {
         //data setting with Results object
         val movieDetailList = intent.getSerializableExtra("Movie Detail List") as Results
         movieResult = movieDetailList
-        movieId = movieResult!!.id!!
+        movieId = movieResult!!.id
+
+        supportActionBar?.title = "${movieResult!!.originalTitle}"
 
         //credits data
         viewModel.creditsByMovieId(movieId!!)

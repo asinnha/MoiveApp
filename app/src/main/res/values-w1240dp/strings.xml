@@ -7,4 +7,6 @@
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="splash_screen_title">Cube Movies</string>
+    <string name="upcoming_movies">🍿 Upcoming Movies</string>
 </resources>

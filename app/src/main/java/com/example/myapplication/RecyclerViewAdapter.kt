@@ -3,11 +3,9 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.MainActivity.Companion.IMAGE_BASE_URL
@@ -23,7 +21,7 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
         val title = binding.titleMainPage
         val poster = binding.posterImageView
         val releaseText = binding.releaseTxt
-        val bookBtn = binding.bookBtn
+        val favoriteBtn = binding.favoriteButton
 
     }
 
@@ -47,7 +45,7 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
             this.isFocusable = true
             this.isFocusableInTouchMode = true
         }
-        holder.releaseText.text = "Releasing on: ${ movieDetailsList[position].releaseDate }"
+        holder.releaseText.text = "Release Date: ${ movieDetailsList[position].releaseDate }"
 
         val urlForPoster = "$IMAGE_BASE_URL${movieDetailsList[position].posterPath}"
         Glide.with(context)

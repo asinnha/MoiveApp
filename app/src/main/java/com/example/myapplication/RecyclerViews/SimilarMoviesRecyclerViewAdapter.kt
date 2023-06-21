@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication.MainActivity
+import com.example.myapplication.MainActivity.Companion.IMAGE_BASE_URL
 import com.example.myapplication.databinding.ModalMovieCardMainPageBinding
 import com.example.myapplication.dataclasses.SimilarMovieResults
 
@@ -40,9 +40,9 @@ class SimilarMoviesRecyclerViewAdapter(val similarMovieList: ArrayList<SimilarMo
             this.isFocusable = true
             this.isFocusableInTouchMode = true
         }
-        holder.releaseDate.text = "Releasing on: ${ similarMovieList[position].releaseDate }"
+        holder.releaseDate.text = "Release Date: ${ similarMovieList[position].releaseDate }"
 
-        val urlForPoster = "${MainActivity.IMAGE_BASE_URL}${similarMovieList[position].posterPath}"
+        val urlForPoster = "${IMAGE_BASE_URL}${similarMovieList[position].posterPath}"
         Glide.with(context)
             .load(urlForPoster)
             .centerInside()

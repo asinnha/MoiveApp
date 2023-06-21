@@ -1,19 +1,18 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.dataclasses.Results
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.startKoin
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding
     var nowPlayingMovieList =  ArrayList<Results>()
+    var upcomingMoviesList =  ArrayList<Results>()
 
     val viewModel: MoviesViewModel by viewModel()
 
@@ -39,24 +39,61 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //to change the status bar color
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//        window.statusBarColor = resources.getColor(com.google.android.material.R.color.design_default_color_on_primary,null)
-//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        supportActionBar?.title = "CubeMovies"
 
-        //koin init
         startKoin {
             androidContext(this@MainActivity)
             modules(appModule)
         }
 
+        if(viewModel.getSessionId().isNullOrEmpty()){
+            viewModel.requestToken()
+            viewModel.tokenResponse.observe(this) {
+                println("act $it")
+
+                AlertDialog.Builder(this)
+                    .setTitle("One Time Auth")
+                    .setMessage("enter 'asinnha' as username and 'akshat16' as password. Remember to close the web view by clicking on the cross. Click the close button after login and after the session is approved.")
+                    .setPositiveButton("OK") { d, _ ->
+                        val url = "https://www.themoviedb.org/authenticate/$it"
+                        val customTabsIntentBuilder = CustomTabsIntent.Builder()
+                        customTabsIntentBuilder
+                            .build()
+                            .launchUrl(this, Uri.parse(url))
+                            GlobalScope.launch{
+                                while (viewModel.getSessionId().isNullOrEmpty()) {
+                                    delay(200)
+                                    viewModel.tokenResponse.value?.let {token->
+                                        viewModel.createSessionId(
+                                            token
+                                        )
+                                    }
+                                }
+                            }
+                    }
+                    .setNegativeButton("CLOSE"){d,_->
+                        d.dismiss()
+                    }
+                    .create().show()
+
+            }
+        }else{
+            println("sid -> "+viewModel.getSessionId())
+        }
+
         //recycler view init
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = GridLayoutManager(this,2)
+        recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         val recyclerViewAdapter = RecyclerViewAdapter(nowPlayingMovieList,this)
         recyclerView.adapter = recyclerViewAdapter
 
+        val upcomingMoviesRecyclerView = binding.upcomingRecyclerView
+        upcomingMoviesRecyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        val upcomingRecyclerViewAdapter = RecyclerViewAdapter(upcomingMoviesList,this)
+        upcomingMoviesRecyclerView.adapter = upcomingRecyclerViewAdapter
+
         viewModel.nowPlayingCall()
+        viewModel.upcomingMovies()
         //observing the now playing arraylist
         viewModel.nowPlayingList.observe(this){
             if(it == null){
@@ -65,6 +102,10 @@ class MainActivity : AppCompatActivity() {
                 nowPlayingMovieList.addAll(it)
                 recyclerViewAdapter.notifyDataSetChanged()
             }
+        }
+        viewModel.upcomingMovies.observe(this){
+            upcomingMoviesList.addAll(it)
+            upcomingRecyclerViewAdapter.notifyDataSetChanged()
         }
     }
 

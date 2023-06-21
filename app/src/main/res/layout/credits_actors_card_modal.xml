@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="190sp"
-    android:layout_height="280sp"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="165sp"
+    android:layout_height="250sp"
     android:layout_marginStart="10sp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8sp">
+    app:cardBackgroundColor="@color/translucent"
+    app:cardCornerRadius="8sp"
+    app:cardPreventCornerOverlap="false"
+    app:strokeWidth="0sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -23,12 +26,12 @@
             android:layout_height="match_parent"
             android:id="@+id/credits_title"
             android:textSize="16sp"
-            android:paddingStart="6sp"
-            android:paddingEnd="6sp"
-            android:paddingTop="4sp"
-            android:paddingBottom="4sp"
+            android:layout_marginStart="6sp"
+            android:layout_marginEnd="6sp"
+            android:layout_marginTop="4sp"
+            android:layout_marginBottom="4sp"
             android:layout_weight="3"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
