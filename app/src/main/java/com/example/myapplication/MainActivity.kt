@@ -21,6 +21,7 @@ import org.koin.core.context.stopKoin
 class MainActivity : AppCompatActivity() {
 
     companion object{
+        const val ACCESS_TOKEN_AUTH = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNTY3OWZjYmVjZDgyOGJiOGVkNzRmODNlNmRhOTljOSIsInN1YiI6IjY0ODAzMDU1OTkyNTljMDBjNWIyOGFlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.q_N2vKaZiq1fXSyghJo-O1X2T9g4VOw8B0XblV8BOFA"
         const val API_KEY = "05679fcbecd828bb8ed74f83e6da99c9"
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
     var nowPlayingMovieList =  ArrayList<Results>()
     var upcomingMoviesList =  ArrayList<Results>()
+    var favoriteMoviesList =  ArrayList<Results>()
 
     val viewModel: MoviesViewModel by viewModel()
 
@@ -92,20 +94,34 @@ class MainActivity : AppCompatActivity() {
         val upcomingRecyclerViewAdapter = RecyclerViewAdapter(upcomingMoviesList,this)
         upcomingMoviesRecyclerView.adapter = upcomingRecyclerViewAdapter
 
+        val favoriteMovieRecyclerView = binding.favoriteMoviesRecyclerView
+        favoriteMovieRecyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        val favoriteMovieRecyclerViewAdapter = RecyclerViewAdapter(favoriteMoviesList,this)
+        favoriteMovieRecyclerView.adapter = favoriteMovieRecyclerViewAdapter
+
         viewModel.nowPlayingCall()
         viewModel.upcomingMovies()
+        viewModel.getFavMovie()
         //observing the now playing arraylist
         viewModel.nowPlayingList.observe(this){
             if(it == null){
                 Toast.makeText(this@MainActivity,"loading",Toast.LENGTH_LONG).show()
             }else{
+                nowPlayingMovieList.clear()
                 nowPlayingMovieList.addAll(it)
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
         viewModel.upcomingMovies.observe(this){
+            upcomingMoviesList.clear()
             upcomingMoviesList.addAll(it)
             upcomingRecyclerViewAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.getFavMovieList.observe(this){
+            favoriteMoviesList.clear()
+            favoriteMoviesList.addAll(it)
+            favoriteMovieRecyclerViewAdapter.notifyDataSetChanged()
         }
     }
 

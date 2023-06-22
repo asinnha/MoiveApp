@@ -21,7 +21,7 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
         val title = binding.titleMainPage
         val poster = binding.posterImageView
         val releaseText = binding.releaseTxt
-        val favoriteBtn = binding.favoriteButton
+//        val favoriteBtn = binding.favoriteButton
 
     }
 

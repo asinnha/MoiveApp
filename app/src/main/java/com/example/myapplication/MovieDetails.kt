@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.RecyclerViews.CastRecyclerViewAdapter
@@ -10,6 +11,7 @@ import com.example.myapplication.RecyclerViews.CrewRecyclerViewAdapter
 import com.example.myapplication.RecyclerViews.ReviewsRecyclerViewAdapter
 import com.example.myapplication.RecyclerViews.SimilarMoviesRecyclerViewAdapter
 import com.example.myapplication.databinding.ActivityMovieDetailsPageBinding
+import com.example.myapplication.dataclasses.AddFavourite
 import com.example.myapplication.dataclasses.Cast
 import com.example.myapplication.dataclasses.Crew
 import com.example.myapplication.dataclasses.Results
@@ -98,6 +100,23 @@ class MovieDetails : AppCompatActivity() {
             similarMovieRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
             val similarMovieAdapter = SimilarMoviesRecyclerViewAdapter(similarMovies,this)
             similarMovieRecyclerView.adapter = similarMovieAdapter
+        }
+
+        binding.favoriteButton.setOnCheckedChangeListener{ checkBox, isChecked ->
+
+            if(isChecked){
+                checkBox.buttonDrawable = ContextCompat.getDrawable(this,R.drawable.filled_favorite_48px)
+                val addFavourite = AddFavourite("movie",movieId!!,true)
+                viewModel.addFavoriteMovie(addFavourite)
+            }else{
+                checkBox.buttonDrawable = ContextCompat.getDrawable(this,R.drawable.favorite_48px)
+                val addFavourite = AddFavourite("movie",movieId!!,false)
+                viewModel.addFavoriteMovie(addFavourite)
+            }
+
+        }
+        viewModel.addFavStatus.observe(this){
+            if(it!=null){ viewModel.getFavMovie()}
         }
 
     }

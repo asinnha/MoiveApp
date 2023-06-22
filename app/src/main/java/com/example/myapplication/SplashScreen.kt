@@ -19,7 +19,9 @@ class SplashScreen : AppCompatActivity() {
 
         GlobalScope.launch {
             delay(1200)
-            startActivity(Intent(this@SplashScreen,MainActivity::class.java))
+            val intent = Intent(this@SplashScreen,MainActivity::class.java)
+            startActivity(intent)
+            this@SplashScreen.finish()
         }
     }
 }

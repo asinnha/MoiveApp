@@ -16,17 +16,36 @@
             android:layout_height="260sp"
             android:id="@+id/backdrop_poster"/>
 
-        <TextView
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="10sp"
-            android:paddingEnd="10sp"
-            android:layout_marginTop="5sp"
-            android:id="@+id/md_title"
-            android:textSize="25sp"
-            android:hint="title"
-            android:textStyle="bold"
-            />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10sp"
+                android:paddingEnd="10sp"
+                android:layout_marginTop="5sp"
+                android:id="@+id/md_title"
+                android:textSize="25sp"
+                android:hint="title"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                />
+
+
+
+            <CheckBox
+                android:id="@+id/favoriteButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/favorite_button_function"
+                android:contentDescription="favorite button"
+                android:layout_weight="7"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
             android:layout_width="match_parent"

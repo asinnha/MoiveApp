@@ -3,6 +3,7 @@ package com.example.myapplication
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.dataclasses.AddFavourite
 import com.example.myapplication.dataclasses.Cast
 import com.example.myapplication.dataclasses.Crew
 import com.example.myapplication.dataclasses.Results
@@ -55,5 +56,15 @@ class MoviesViewModel(private val moviesRepo: MoviesRepo): ViewModel() {
 
     fun createSessionId(requestToken: String) {
         moviesRepo.createSessionId(requestToken)
+    }
+
+    val addFavStatus:LiveData<String?> = moviesRepo.addFavStatusMessage
+    fun addFavoriteMovie(addFav: AddFavourite) {
+        viewModelScope.launch{ moviesRepo.addFavoriteMovie(addFav) }
+    }
+
+    val getFavMovieList: LiveData<ArrayList<Results>> = moviesRepo.getFavMovie
+    fun getFavMovie(){
+        getSessionId()?.let { moviesRepo.getFavoriteMovie(it) }
     }
 }

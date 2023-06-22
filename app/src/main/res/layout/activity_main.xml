@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,11 +15,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="34sp"
             android:layout_marginStart="10dp"
+            android:letterSpacing="0.04"
             android:text="🍿 Now Showing"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -31,22 +26,36 @@
             android:orientation="horizontal"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            android:layout_marginEnd="12sp"/>
+
+        <TextView
+            android:id="@+id/favoriteMovies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25sp"
+            android:layout_marginStart="10dp"
+            android:letterSpacing="0.04"
+            android:text="@string/favorite_movies"
+            android:textSize="20sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favoriteMoviesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12sp" />
 
         <TextView
             android:id="@+id/upcomingMoviesLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34sp"
+            android:layout_marginTop="25sp"
             android:layout_marginStart="10dp"
+            android:letterSpacing="0.04"
             android:text="@string/upcoming_movies"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcomingRecyclerView"
@@ -55,10 +64,7 @@
             android:orientation="horizontal"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            android:layout_marginEnd="12sp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

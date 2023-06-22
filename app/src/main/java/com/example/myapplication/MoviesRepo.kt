@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.MainActivity.Companion.ACCESS_TOKEN_AUTH
 import com.example.myapplication.MainActivity.Companion.API_KEY
+import com.example.myapplication.dataclasses.AddFavourite
 import com.example.myapplication.dataclasses.Cast
 import com.example.myapplication.dataclasses.CreateRequestToken
 import com.example.myapplication.dataclasses.Credits
 import com.example.myapplication.dataclasses.Crew
+import com.example.myapplication.dataclasses.FavoriteResponse
 import com.example.myapplication.dataclasses.Movie
 import com.example.myapplication.dataclasses.MovieReview
 import com.example.myapplication.dataclasses.Results
@@ -193,6 +196,52 @@ class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
                 Log.i("Session Id",t.message.toString())
             }
 
+        })
+    }
+
+    val addFavStatusMessage= MutableLiveData<String?>()
+    suspend fun addFavoriteMovie(addFav: AddFavourite) {
+        val addFavPost = retrofitCall.addFavoriteMovie(ACCESS_TOKEN_AUTH,addFav)
+        addFavPost.enqueue(object : Callback<FavoriteResponse> {
+            override fun onResponse(call: Call<FavoriteResponse>, response: Response<FavoriteResponse>) {
+                if (response.isSuccessful) {
+                    val statusCheck = response.body()
+                    if (statusCheck?.success == true) {
+                        addFavStatusMessage.value = statusCheck.statusMessage
+                        println("repo ${addFavStatusMessage.value}")
+                        Log.i("Add Fav", "SUCCESS")
+                    }
+                } else {
+                    println("Response is not successful. Code: ${response.code()}, Message: ${response.message()}")
+                    // Handle the error response accordingly
+                }
+            }
+
+            override fun onFailure(call: Call<FavoriteResponse>, t: Throwable) {
+                Log.e("Add Fav", "Error: ${t.message}")
+                // Handle failure accordingly
+            }
+        })
+
+    }
+
+    val getFavMovie = MutableLiveData<ArrayList<Results>>()
+    fun getFavoriteMovie(sessionId: String){
+        val getFavoriteMovie = retrofitCall.getFavoriteMovie(sessionId, API_KEY)
+        getFavoriteMovie.enqueue(object : Callback<Movie> {
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                if(response.isSuccessful){
+                    val movie: Movie? = response.body()
+                    movie?.let {
+                        getFavMovie.value = it.results
+                        Log.i("Fav Movie","SUCCESS")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+                Log.e("Fav Movie", t.message.toString())
+            }
         })
     }
 

@@ -1,7 +1,9 @@
 package com.example.myapplication
 
+import com.example.myapplication.dataclasses.AddFavourite
 import com.example.myapplication.dataclasses.CreateRequestToken
 import com.example.myapplication.dataclasses.Credits
+import com.example.myapplication.dataclasses.FavoriteResponse
 import com.example.myapplication.dataclasses.Movie
 import com.example.myapplication.dataclasses.MovieReview
 import com.example.myapplication.dataclasses.SessionRequestBody
@@ -10,6 +12,7 @@ import com.example.myapplication.dataclasses.SimilarMovies
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -54,4 +57,19 @@ interface RetrofitCall {
         @Path("movie_id") movie_id: Int,
         @Query("api_key") api_key: String
     ):Call<SimilarMovies>
+
+    @POST("account/19878445/favorite")
+    fun addFavoriteMovie(
+        @Header("Authorization") authorization: String,
+        @Body postBody: AddFavourite
+    ) :Call<FavoriteResponse>
+
+    @GET("account/19878445/favorite/movies")
+    fun getFavoriteMovie(
+        @Query("session_id") sessionId: String,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"
+    ): Call<Movie>
 }

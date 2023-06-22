@@ -9,4 +9,5 @@
     <string name="similar_movies">Similar Movies</string>
     <string name="splash_screen_title">Cube Movies</string>
     <string name="upcoming_movies">🍿 Upcoming Movies</string>
+    <string name="favorite_movies">🍿Favorite Movies</string>
 </resources>
