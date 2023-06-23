@@ -3,13 +3,10 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.dataclasses.Results
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,11 +26,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding:ActivityMainBinding
-    var nowPlayingMovieList =  ArrayList<Results>()
-    var upcomingMoviesList =  ArrayList<Results>()
-    var favoriteMoviesList =  ArrayList<Results>()
-
+//    var nowPlayingMovieList =  ArrayList<Results>()
+//    var upcomingMoviesList =  ArrayList<Results>()
+//    var favoriteMoviesList =  ArrayList<Results>()
+//
     val viewModel: MoviesViewModel by viewModel()
+//    lateinit var navController: NavController
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,13 +39,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "CubeMovies"
+        window.statusBarColor = resources.getColor(com.google.android.material.R.color.primary_dark_material_dark)
 
         startKoin {
             androidContext(this@MainActivity)
             modules(appModule)
         }
 
+        //one time auth for session id
         if(viewModel.getSessionId().isNullOrEmpty()){
             viewModel.requestToken()
             viewModel.tokenResponse.observe(this) {
@@ -82,47 +81,9 @@ class MainActivity : AppCompatActivity() {
         }else{
             println("sid -> "+viewModel.getSessionId())
         }
-
-        //recycler view init
-        val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        val recyclerViewAdapter = RecyclerViewAdapter(nowPlayingMovieList,this)
-        recyclerView.adapter = recyclerViewAdapter
-
-        val upcomingMoviesRecyclerView = binding.upcomingRecyclerView
-        upcomingMoviesRecyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        val upcomingRecyclerViewAdapter = RecyclerViewAdapter(upcomingMoviesList,this)
-        upcomingMoviesRecyclerView.adapter = upcomingRecyclerViewAdapter
-
-        val favoriteMovieRecyclerView = binding.favoriteMoviesRecyclerView
-        favoriteMovieRecyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        val favoriteMovieRecyclerViewAdapter = RecyclerViewAdapter(favoriteMoviesList,this)
-        favoriteMovieRecyclerView.adapter = favoriteMovieRecyclerViewAdapter
-
         viewModel.nowPlayingCall()
         viewModel.upcomingMovies()
         viewModel.getFavMovie()
-        //observing the now playing arraylist
-        viewModel.nowPlayingList.observe(this){
-            if(it == null){
-                Toast.makeText(this@MainActivity,"loading",Toast.LENGTH_LONG).show()
-            }else{
-                nowPlayingMovieList.clear()
-                nowPlayingMovieList.addAll(it)
-                recyclerViewAdapter.notifyDataSetChanged()
-            }
-        }
-        viewModel.upcomingMovies.observe(this){
-            upcomingMoviesList.clear()
-            upcomingMoviesList.addAll(it)
-            upcomingRecyclerViewAdapter.notifyDataSetChanged()
-        }
-
-        viewModel.getFavMovieList.observe(this){
-            favoriteMoviesList.clear()
-            favoriteMoviesList.addAll(it)
-            favoriteMovieRecyclerViewAdapter.notifyDataSetChanged()
-        }
     }
 
     override fun onDestroy() {

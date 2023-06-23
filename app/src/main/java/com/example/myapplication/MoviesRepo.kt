@@ -152,7 +152,7 @@ class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
 
     }
 
-    val similarMovies = MutableLiveData<ArrayList<SimilarMovieResults>>()
+    val similarMovies = MutableLiveData<ArrayList<Results>>()
     suspend fun similarMoviesByMovieId(movieId: Int){
 
         val callSimilarMovies = retrofitCall.similarMoviesByMovieId(movieId, API_KEY)

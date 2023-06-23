@@ -6,7 +6,7 @@ import java.io.Serializable
 data class SimilarMovies (
 
     @SerializedName("page"          ) var page         : Int?               = null,
-    @SerializedName("results"       ) var results      : ArrayList<SimilarMovieResults> = arrayListOf(),
+    @SerializedName("results"       ) var results      : ArrayList<Results> = arrayListOf(),
     @SerializedName("total_pages"   ) var totalPages   : Int?               = null,
     @SerializedName("total_results" ) var totalResults : Int?               = null
 

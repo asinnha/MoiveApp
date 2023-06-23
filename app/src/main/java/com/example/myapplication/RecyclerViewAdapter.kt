@@ -3,25 +3,27 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.MainActivity.Companion.IMAGE_BASE_URL
 import com.example.myapplication.databinding.ModalMovieCardMainPageBinding
 import com.example.myapplication.dataclasses.Results
 
-class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val context: Context)
+class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val context: Context,val navController: NavController)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
 
-    inner class ViewHolder(binding: ModalMovieCardMainPageBinding)
+    inner class ViewHolder(val binding: ModalMovieCardMainPageBinding)
         :RecyclerView.ViewHolder(binding.root) {
 
         val title = binding.titleMainPage
         val poster = binding.posterImageView
         val releaseText = binding.releaseTxt
-//        val favoriteBtn = binding.favoriteButton
 
     }
 
@@ -54,10 +56,10 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
             .into(holder.poster)
 
         holder.poster.setOnClickListener {
-            val intent = Intent(holder.poster.context,MovieDetails::class.java)
-            val results:Results = movieDetailsList[position]
-            intent.putExtra("Movie Detail List",results)
-            holder.poster.context.startActivity(intent)
+            val movie = movieDetailsList[position]
+            val action: NavDirections = MainFragmentDirections.actionMainFragmentToMovieDetailsFragment(movie)
+            navController.navigate(action)
+
         }
     }
 }

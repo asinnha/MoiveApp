@@ -3,13 +3,18 @@ package com.example.myapplication.RecyclerViews
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.MainActivity.Companion.IMAGE_BASE_URL
 import com.example.myapplication.databinding.CreditsActorsCardModalBinding
 import com.example.myapplication.dataclasses.Crew
 
-class CrewRecyclerViewAdapter( private val crewList: ArrayList<Crew>, val context: Context):
+class CrewRecyclerViewAdapter(
+    private val crewList: ArrayList<Crew>,
+    val context: Context,
+    navController: NavController
+):
     RecyclerView.Adapter<CrewRecyclerViewAdapter.ViewHolder>() {
 
     val filteredCrewList = ArrayList<Crew>()

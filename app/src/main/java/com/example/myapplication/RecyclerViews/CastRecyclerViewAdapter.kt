@@ -3,13 +3,18 @@ package com.example.myapplication.RecyclerViews
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.MainActivity.Companion.IMAGE_BASE_URL
 import com.example.myapplication.databinding.CreditsActorsCardModalBinding
 import com.example.myapplication.dataclasses.Cast
 
-class CastRecyclerViewAdapter (val castList: ArrayList<Cast>,val context: Context): RecyclerView.Adapter<CastRecyclerViewAdapter.ViewHolder>() {
+class CastRecyclerViewAdapter(
+    val castList: ArrayList<Cast>,
+    val context: Context,
+    navController: NavController
+): RecyclerView.Adapter<CastRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: CreditsActorsCardModalBinding): RecyclerView.ViewHolder(binding.root) {
         val creditsImageView = binding.creditImageView

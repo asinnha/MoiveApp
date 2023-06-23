@@ -2,13 +2,14 @@
 <resources>
     <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="title_activity_movie_details">Movie Details</string>
-    <string name="Synopsis">Synopsis</string>
-    <string name="Review">Reviews</string>
-    <string name="Credits">Credits</string>
-    <string name="cast">Cast</string>
-    <string name="crew">Crew</string>
-    <string name="similar_movies">Similar Movies</string>
+    <string name="Synopsis">SYNOPSIS</string>
+    <string name="Review">REVIEWS</string>
+    <string name="Credits">CREDITS</string>
+    <string name="cast">CAST</string>
+    <string name="crew">CREW</string>
+    <string name="similar_movies">SIMILAR MOVIES</string>
     <string name="splash_screen_title">Cube Movies</string>
     <string name="upcoming_movies">🍿 Upcoming Movies</string>
     <string name="favorite_movies">🍿Favorite Movies</string>
+    <string name="now_showing">🍿 Now Showing</string>
 </resources>

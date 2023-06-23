@@ -49,7 +49,7 @@ class MoviesViewModel(private val moviesRepo: MoviesRepo): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) { moviesRepo.creditsByMovieId(movieId) }
     }
 
-    val similarMovies: LiveData<ArrayList<SimilarMovieResults>> = moviesRepo.similarMovies
+    val similarMovies: LiveData<ArrayList<Results>> = moviesRepo.similarMovies
     fun similarMoviesByMovieId(movieId: Int){
         viewModelScope.launch(Dispatchers.IO) { moviesRepo.similarMoviesByMovieId(movieId) }
     }
