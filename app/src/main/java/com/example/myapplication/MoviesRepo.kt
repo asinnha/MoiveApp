@@ -18,8 +18,9 @@ import com.example.myapplication.dataclasses.Results
 import com.example.myapplication.dataclasses.ReviewResult
 import com.example.myapplication.dataclasses.SessionRequestBody
 import com.example.myapplication.dataclasses.SessionResponse
-import com.example.myapplication.dataclasses.SimilarMovieResults
 import com.example.myapplication.dataclasses.SimilarMovies
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,8 +62,36 @@ class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
         return sharedPref.getString("Session Id","")
     }
 
-    private val nowPlaying = retrofitCall.nowPlaying(API_KEY)
+
+    private val favoriteSharedPreferences: SharedPreferences = context.getSharedPreferences("Favorite List",Context.MODE_PRIVATE)
+    val favoriteList: ArrayList<AddFavourite> = ArrayList()
+    fun saveFavorites(){
+        val arrayListToJson = Gson().toJson(favoriteList)
+        favoriteSharedPreferences.edit()
+            .putString("Save Favorite List Key",arrayListToJson)
+            .apply()
+    }
+    fun getFavorites(): ArrayList<AddFavourite>? {
+        val arrayToJson = favoriteSharedPreferences.getString("Save Favorite List Key", " ")
+        val type = object : TypeToken<ArrayList<AddFavourite>>() {}.type
+        return Gson().fromJson(arrayToJson, type)
+    }
+
+
     var movieDetailsArrayList = MutableLiveData<ArrayList<Results>>()
+//    private val movieResultsDao = nowShowingDatabase.movieResultDao()
+//    suspend fun insertNowPlaying(results:ArrayList<Results>){
+//        movieResultsDao.insertAll(results)
+//    }
+//    fun getNowPlaying(): MutableLiveData<ArrayList<Results>> {
+//        val mList = MutableLiveData<ArrayList<Results>>()
+//        mList.value = movieResultsDao.getAll() as ArrayList<Results>
+//        return mList
+//    }
+
+    private val nowPlaying = retrofitCall.nowPlaying(API_KEY)
+
+
     suspend fun nowPlayingCall(){
 
         nowPlaying.enqueue(object : Callback<Movie> {
@@ -70,6 +99,10 @@ class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
                 if(response.isSuccessful){
                     val movie: Movie? = response.body()
                     movie?.let {
+//                        CoroutineScope(Dispatchers.IO).launch {
+//                            insertNowPlaying(it.results)
+//                            movieDetailsArrayList.value = getNowPlaying() as ArrayList<Results>
+//                        }
                         movieDetailsArrayList.value = it.results
                         Log.i("Now Playing","SUCCESS")
                     }

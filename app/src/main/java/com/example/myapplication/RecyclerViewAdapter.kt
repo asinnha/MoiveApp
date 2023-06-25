@@ -38,7 +38,7 @@ class RecyclerViewAdapter(val movieDetailsList:ArrayList<Results>,private val co
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.title.text = movieDetailsList[position].originalTitle
+        holder.title.text = movieDetailsList[position].title
         holder.title.apply {
             this.isSelected = true
             this.ellipsize = TextUtils.TruncateAt.MARQUEE

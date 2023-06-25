@@ -3,16 +3,17 @@ package com.example.myapplication.dataclasses
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-@Entity(tableName = "movie result")
+//@Entity(tableName = "movie_results")
 data class Results(
 
     @SerializedName("adult"             ) var adult           : Boolean?        = null,
     @SerializedName("backdrop_path"     ) var backdropPath    : String?         = null,
-    @SerializedName("genre_ids"         ) var genreIds        : ArrayList<Int>? = arrayListOf(),
+    @SerializedName("genre_ids" ) var genreIds        : ArrayList<Int>? = arrayListOf(),
     @PrimaryKey @SerializedName("id"    ) var id              : Int?            = null,
     @SerializedName("original_language" ) var originalLanguage: String?         = null,
     @SerializedName("original_title"    ) var originalTitle   : String?         = null,

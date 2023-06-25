@@ -9,7 +9,7 @@
     <string name="crew">CREW</string>
     <string name="similar_movies">SIMILAR MOVIES</string>
     <string name="splash_screen_title">Cube Movies</string>
-    <string name="upcoming_movies">🍿 Upcoming Movies</string>
-    <string name="favorite_movies">🍿Favorite Movies</string>
-    <string name="now_showing">🍿 Now Showing</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="now_showing">Now Showing</string>
 </resources>

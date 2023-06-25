@@ -26,18 +26,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding:ActivityMainBinding
-//    var nowPlayingMovieList =  ArrayList<Results>()
-//    var upcomingMoviesList =  ArrayList<Results>()
-//    var favoriteMoviesList =  ArrayList<Results>()
 //
     val viewModel: MoviesViewModel by viewModel()
-//    lateinit var navController: NavController
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = "Cube Movies"
 
         window.statusBarColor = resources.getColor(com.google.android.material.R.color.primary_dark_material_dark)
 

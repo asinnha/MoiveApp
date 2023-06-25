@@ -14,9 +14,10 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34sp"
+            android:layout_marginTop="6sp"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.04"
+            android:fontFamily="@font/prompt_medium"
             android:text="@string/now_showing"
             android:textSize="20sp" />
 
@@ -36,6 +37,7 @@
             android:layout_marginTop="25sp"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.04"
+            android:fontFamily="@font/prompt_medium"
             android:text="@string/favorite_movies"
             android:textSize="20sp"/>
 
@@ -55,6 +57,7 @@
             android:layout_marginTop="25sp"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.04"
+            android:fontFamily="@font/prompt_medium"
             android:text="@string/upcoming_movies"
             android:textSize="20sp" />
 

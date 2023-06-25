@@ -122,6 +122,13 @@ class MovieDetailFragment:Fragment() {
             similarMovieRecyclerView.adapter = similarMovieAdapter
         }
 
+
+        viewModel.favMovieCheckList?.forEach {
+            if (it.mediaId == movieId){
+                binding.favoriteButton.isChecked = true
+            }
+        }
+
         binding.favoriteButton.setOnCheckedChangeListener{ checkBox, isChecked ->
 
             context?.let{
