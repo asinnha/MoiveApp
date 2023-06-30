@@ -21,20 +21,20 @@ val appModule = module {
                 .create(RetrofitCall::class.java)
     }
 
-//    single {
-//        Room.databaseBuilder(
-//            androidContext(),
-//            NowShowingDatabase::class.java,
-//            "movie_results",
-//        ).build()
-//    }
-//
-//    single{
-//        get<NowShowingDatabase>().movieResultDao()
-//    }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            NowShowingDatabase::class.java,
+            "movie_results",
+        ).build()
+    }
+
+    single{
+        get<NowShowingDatabase>().movieResultDao()
+    }
 
     single {
-        MoviesRepo(get(),androidContext())
+        MoviesRepo(get(),androidContext(),get())
     }
 
     viewModel {

@@ -19,13 +19,17 @@ import com.example.myapplication.dataclasses.ReviewResult
 import com.example.myapplication.dataclasses.SessionRequestBody
 import com.example.myapplication.dataclasses.SessionResponse
 import com.example.myapplication.dataclasses.SimilarMovies
+import com.example.myapplication.roomdatabase.NowShowingDatabase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
+class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context,val nowShowingDatabase: NowShowingDatabase) {
 
     val token =MutableLiveData<String>()
     suspend fun requestToken() {
@@ -79,15 +83,23 @@ class MoviesRepo(private val retrofitCall: RetrofitCall, val context: Context) {
 
 
     var movieDetailsArrayList = MutableLiveData<ArrayList<Results>>()
-//    private val movieResultsDao = nowShowingDatabase.movieResultDao()
-//    suspend fun insertNowPlaying(results:ArrayList<Results>){
-//        movieResultsDao.insertAll(results)
-//    }
-//    fun getNowPlaying(): MutableLiveData<ArrayList<Results>> {
-//        val mList = MutableLiveData<ArrayList<Results>>()
-//        mList.value = movieResultsDao.getAll() as ArrayList<Results>
-//        return mList
-//    }
+    private val movieResultsDao = nowShowingDatabase.movieResultDao()
+    suspend fun insertNowPlaying(results:ArrayList<Results>){
+        movieResultsDao.deleteAll()
+        movieResultsDao.insertAll(results)
+    }
+    suspend fun getNowPlaying(): ArrayList<Results> {
+        return movieResultsDao.getAll() as ArrayList<Results>
+
+    }
+
+    suspend fun orderOldest(): ArrayList<Results>{
+        return movieResultsDao.orderOldest() as ArrayList<Results>
+    }
+
+    suspend fun orderLatest(): ArrayList<Results>{
+        return movieResultsDao.orderLatest() as ArrayList<Results>
+    }
 
     private val nowPlaying = retrofitCall.nowPlaying(API_KEY)
 

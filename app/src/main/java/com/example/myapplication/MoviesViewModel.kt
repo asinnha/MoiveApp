@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,11 +10,9 @@ import com.example.myapplication.dataclasses.Cast
 import com.example.myapplication.dataclasses.Crew
 import com.example.myapplication.dataclasses.Results
 import com.example.myapplication.dataclasses.ReviewResult
-import com.example.myapplication.dataclasses.SimilarMovieResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 class MoviesViewModel(private val moviesRepo: MoviesRepo): ViewModel() {
 
@@ -36,11 +35,12 @@ class MoviesViewModel(private val moviesRepo: MoviesRepo): ViewModel() {
     fun nowPlayingCall(){
         viewModelScope.launch(Dispatchers.IO){
             moviesRepo.nowPlayingCall()
-//            nowPlayingList.value?.let { moviesRepo.insertNowPlaying(it) }
-//            withContext(Dispatchers.Main)
-//            {
-//                getNowPlayingList = moviesRepo.getNowPlaying()
-//            }
+            nowPlayingList.value?.let { moviesRepo.insertNowPlaying(it) }
+            withContext(Dispatchers.IO)
+            {
+                val getNowPlayingList = moviesRepo.getNowPlaying()
+                println("hey b "+getNowPlayingList)
+            }
         }
     }
 
@@ -90,5 +90,24 @@ class MoviesViewModel(private val moviesRepo: MoviesRepo): ViewModel() {
     val getFavMovieList: LiveData<ArrayList<Results>> = moviesRepo.getFavMovie
     fun getFavMovie(){
         getSessionId()?.let { moviesRepo.getFavoriteMovie(it) }
+    }
+
+    val sortingNowPlaying = MutableLiveData<ArrayList<Results>>()
+    fun orderOldest() {
+        viewModelScope.launch(Dispatchers.IO){
+            val data = withContext(this.coroutineContext){
+                moviesRepo.orderOldest()
+            }
+            sortingNowPlaying.postValue(data)
+        }
+    }
+
+    fun orderLatest(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = withContext(this.coroutineContext){
+                moviesRepo.orderLatest()
+            }
+            sortingNowPlaying.postValue(data)
+        }
     }
 }

@@ -1,17 +1,20 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentMainBinding
 import com.example.myapplication.dataclasses.Results
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainFragment : Fragment() {
 
@@ -20,6 +23,8 @@ class MainFragment : Fragment() {
     var nowPlayingMovieList =  ArrayList<Results>()
     var upcomingMoviesList =  ArrayList<Results>()
     var favoriteMoviesList =  ArrayList<Results>()
+
+    lateinit var recyclerViewAdapter:RecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +47,7 @@ class MainFragment : Fragment() {
                 context,
                 LinearLayoutManager.HORIZONTAL, false
             )
-            val recyclerViewAdapter =
+            recyclerViewAdapter =
                 RecyclerViewAdapter(nowPlayingMovieList, context, navController)
             recyclerView.adapter = recyclerViewAdapter
 
@@ -86,8 +91,45 @@ class MainFragment : Fragment() {
             }
         }
 
+        binding.sortingBtnNowPlaying.setOnClickListener {
+            inflateMenu(context,it)
+        }
 
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun inflateMenu(mainFragment: Context?, view: View) {
+        val popupMenu = mainFragment?.let { PopupMenu(it,view) }
+        val menuInflater = popupMenu?.menuInflater
+        menuInflater?.inflate(R.menu.menu_sorting,popupMenu.menu)
+        popupMenu?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.release_date_asc -> {
+                    nowPlayingMovieList.clear()
+                    viewModel.orderOldest()
+                    viewModel.sortingNowPlaying.observe(requireActivity()){results->
+                        nowPlayingMovieList.addAll(results)
+                        recyclerViewAdapter.notifyDataSetChanged()
+                    }
+
+                    true
+                }
+
+                R.id.release_date_desc -> {
+                    nowPlayingMovieList.clear()
+                    viewModel.orderLatest()
+                    viewModel.sortingNowPlaying.observe(requireActivity()){results->
+                        nowPlayingMovieList.addAll(results)
+                        recyclerViewAdapter.notifyDataSetChanged()
+                    }
+                    true
+                }
+
+                else -> false
+            }
+        }
+        popupMenu?.show()
     }
 
 }

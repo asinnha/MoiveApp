@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-//@Entity(tableName = "movie_results")
+@Entity(tableName = "movie_results")
 data class Results(
 
     @SerializedName("adult"             ) var adult           : Boolean?        = null,
     @SerializedName("backdrop_path"     ) var backdropPath    : String?         = null,
-    @SerializedName("genre_ids" ) var genreIds        : ArrayList<Int>? = arrayListOf(),
+    @Ignore @SerializedName("genre_ids" ) var genreIds        : ArrayList<Int>? = arrayListOf(),
     @PrimaryKey @SerializedName("id"    ) var id              : Int?            = null,
     @SerializedName("original_language" ) var originalLanguage: String?         = null,
     @SerializedName("original_title"    ) var originalTitle   : String?         = null,
