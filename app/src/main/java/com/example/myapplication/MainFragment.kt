@@ -106,9 +106,9 @@ class MainFragment : Fragment() {
         popupMenu?.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.release_date_asc -> {
-                    nowPlayingMovieList.clear()
                     viewModel.orderOldest()
                     viewModel.sortingNowPlaying.observe(requireActivity()){results->
+                        nowPlayingMovieList.clear()
                         nowPlayingMovieList.addAll(results)
                         recyclerViewAdapter.notifyDataSetChanged()
                     }
@@ -117,9 +117,9 @@ class MainFragment : Fragment() {
                 }
 
                 R.id.release_date_desc -> {
-                    nowPlayingMovieList.clear()
                     viewModel.orderLatest()
                     viewModel.sortingNowPlaying.observe(requireActivity()){results->
+                        nowPlayingMovieList.clear()
                         nowPlayingMovieList.addAll(results)
                         recyclerViewAdapter.notifyDataSetChanged()
                     }
